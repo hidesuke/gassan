@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>合算簡易計算</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        #result {
+            border: 1px solid gray;
+            border-radius: 10px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>合算簡易計算</h1>
+    <h2>入力</h2>
+    <form role="form" class="form-horizontal">
+        <div class="form-group">
+            <label for="overall" class="col-sm-2 control-label">総回転数</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="number" id="overall" placeholder="回転数">
+            </div>
+            <div class="col-sm-1">回転</div>
+        </div>
+        <div class="form-group">
+            <label for="bb" class="col-sm-2 control-label">BB回数</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="number" id="bb" placeholder="BB回数">
+            </div>
+            <div class="col-sm-1">回</div>
+        </div>
+        <div class="form-group">
+            <label for="rb" class="col-sm-2 control-label">RB回数</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="number" id="rb" placeholder="RB回数">
+            </div>
+            <div class="col-sm-1">回</div>
+        </div>
+    </form>
+    <h2>結果</h2>
+    <div id="result"></div>
+    <script src="./js/jquery-1.11.1.min.js"></script> 
+    <script src="./js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var overall = 0, bb = 0, rb = 0;
+
+        $('#overall').on('change', function(){
+            overall = $('#overall').val() || 0;
+            printOdds();
+        });
+
+        $('#bb').on('change', function(){
+            bb = $('#bb').val() || 0;
+            printOdds();
+        });
+
+        $('#rb').on('change', function(){
+            rb = $('#rb').val() || 0;
+            printOdds();
+        });
+
+        var printOdds = function(){
+            var text = 'BB確率 : ' + toFractionString(bb, overall) + '\n';
+            text += 'RB確率 : ' + toFractionString(rb, overall) + '\n';
+            text += '合算 : ' + calcGassan() + '\n';
+            $('#result').html('<pre>' + text + '</pre>');
+        };
+
+        // numerator : 分子, denominator : 分母
+        var toFractionString = function(numerator, denominator){
+            if(denominator === 0) return 0;
+            if(numerator === 0) return 0;
+            return '1/' + Math.floor(denominator / numerator);
+        };
+
+        var calcGassan = function(){
+            if(overall === 0) return 0;
+            var bbOdds = bb / overall;
+            var rbOdds = rb / overall;
+            var gassan = (bbOdds * rbOdds) / (bbOdds + rbOdds);
+            var count = 0;
+            while (gassan < 10){
+                count++;
+                gassan *= 10;
+            }
+            while (count > 0) {
+                gassan *= 10;
+                count--;
+            }
+            return '1/' + Math.floor(gassan);
+        }
+    </script>
+</body>
+</html>
