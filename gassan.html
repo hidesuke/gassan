@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>合算簡易計算</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
     <link href="./css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         #result {
@@ -77,18 +77,10 @@
 
         var calcGassan = function(){
             if(overall === 0) return 0;
-            var bbOdds = bb / overall;
-            var rbOdds = rb / overall;
-            var gassan = (bbOdds * rbOdds) / (bbOdds + rbOdds);
-            var count = 0;
-            while (gassan < 10){
-                count++;
-                gassan *= 10;
-            }
-            while (count > 0) {
-                gassan *= 10;
-                count--;
-            }
+            var bbOdds = Math.floor(overall / bb) || 0;
+            var rbOdds = Math.floor(overall / rb) || 0;
+            var gassan = (bbOdds * rbOdds) / (bbOdds + rbOdds) || 0;
+            if(gassan === 0) return 0;
             return '1/' + Math.floor(gassan);
         }
     </script>
